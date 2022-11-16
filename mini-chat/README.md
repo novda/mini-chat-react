@@ -1,3 +1,3 @@
 ### Mini app for chat
 
-#### Use `npm start-chat` for run
+#### Use `npm install` to install packages and `npm run start-chat` to run
