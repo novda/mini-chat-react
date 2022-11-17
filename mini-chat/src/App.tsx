@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import "./App.scss";
 import AuthForm from "./components/AuthForm";
+import MessagesPage from "./pages/MessagesPage";
 
 function App() {
   const [isAuth, setIsAuth] = useState("false");
@@ -18,7 +19,11 @@ function App() {
 
   return (
     <div className="App">
-      {isAuth === "false" ? <AuthForm setIsAuth={setIsAuth}/> : "Page with messages"}
+      {isAuth === "false" ? (
+        <AuthForm setIsAuth={setIsAuth} />
+      ) : (
+        <MessagesPage />
+      )}
     </div>
   );
 }
