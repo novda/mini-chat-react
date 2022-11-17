@@ -1,4 +1,6 @@
-.Messages {
+.MessagePage {
+  @import "~bootstrap/scss/bootstrap";
+  
   &-navbar {
     border-bottom: 1px solid rgba(39, 38, 38, 0.2);
   }
