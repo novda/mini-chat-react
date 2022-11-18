@@ -1,8 +1,13 @@
 .MessagePage {
   @import "~bootstrap/scss/bootstrap";
-  
+
   &-navbar {
     border-bottom: 1px solid rgba(39, 38, 38, 0.2);
+
+    &-exit {
+      text-decoration: underline;
+      cursor: pointer;
+    }
   }
 
   &-body {
@@ -23,10 +28,16 @@
 
     &-data {
       height: 85%;
+      overflow: auto;
     }
 
     &-form {
       height: 10%;
+
+      &-group {
+        display: flex;
+        margin-top: 15px;
+      }
     }
   }
 }

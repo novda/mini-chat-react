@@ -1,6 +1,4 @@
 import React from "react";
-import { Card } from "react-bootstrap";
-import cn from "classnames";
 import "./Message.scss";
 
 type Props = {
@@ -13,7 +11,7 @@ type Props = {
 
 const Message: React.FC<Props> = ({ messageData }) => {
   return (
-    <div className="Messagee">
+    <div className="Message">
         <strong>{messageData.userFrom}</strong>: {messageData.text}
     </div>
   );
