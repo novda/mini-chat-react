@@ -70,7 +70,7 @@ const MessagesPage: React.FC<Props> = ({ updateUser }) => {
   }
 
   function cleanMessages() {
-    fetch("http://127.0.0.1:8000/all_messages", {
+    fetch(`${dataUrl}/all_messages`, {
       method: "DELETE",
     }).then(() => window.location.reload());
   }
