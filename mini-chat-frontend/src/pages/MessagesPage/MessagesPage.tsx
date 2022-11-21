@@ -16,6 +16,7 @@ type Props = {
 };
 
 const dataUrl = "http://localhost:8000";
+// const dataUrl = "https://s71hn7.deta.dev"
 
 const MessagesPage: React.FC<Props> = ({ updateUser }) => {
   const [data, setData] = useState<Message[]>([]);
@@ -58,12 +59,8 @@ const MessagesPage: React.FC<Props> = ({ updateUser }) => {
     if (message !== "") {
       socket.emit(
         "new_message",
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        /* @ts-ignore */
         { userFrom: username, text: message }
       );
-
-      //   socket.emit("message_added");
     }
     setMessage("");
   }
@@ -129,7 +126,6 @@ const MessagesPage: React.FC<Props> = ({ updateUser }) => {
           </Col>
         </Row>
       </Container>
-      {/* <Message /> */}
     </div>
   );
 };

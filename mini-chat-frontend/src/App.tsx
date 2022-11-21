@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createContext } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.scss";
 import AuthForm from "./components/AuthForm";
 import MessagesPage from "./pages/MessagesPage";
