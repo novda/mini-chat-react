@@ -22,6 +22,7 @@ origins = [
     "http://localhost:8000",
     "http://localhost:3000",
     "https://s71hn7.deta.dev",  # задеплоил в апп облако, но пока не успел настроить интеграцию с сокетакми
+    "http://s71hn7.deta.dev"
 ]
 
 app.add_middleware(
