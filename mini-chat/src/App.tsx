@@ -1,11 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, createContext } from "react";
 import "./App.scss";
 import AuthForm from "./components/AuthForm";
 import MessagesPage from "./pages/MessagesPage";
-import { Provider } from "react-redux";
-import messages from "./utils/api";
-
-import store from "./redux/store";
 
 type UserData = {
   auth: boolean;
@@ -35,13 +31,11 @@ function App() {
 
   return (
     <div className="App">
-      <Provider store={store}>
-        {user?.auth ? (
-          <MessagesPage fetchMessages={messages} updateUser={updateUser} />
-        ) : (
-          <AuthForm updateUser={updateUser} />
-        )}
-      </Provider>
+      {user?.auth ? (
+        <MessagesPage updateUser={updateUser} />
+      ) : (
+        <AuthForm updateUser={updateUser} />
+      )}
     </div>
   );
 }

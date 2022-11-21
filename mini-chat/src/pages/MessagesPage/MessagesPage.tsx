@@ -1,9 +1,7 @@
 import React, { FormEvent, useEffect, useState } from "react";
-import { connect } from "react-redux";
 import Message from "../../components/Message";
 import { Container, Navbar, Row, Col, Form, Button } from "react-bootstrap";
-import { MessageActions } from "../../redux/actions";
-import store from "../../redux/store";
+import socket from "../../utils/socket/socket";
 
 import "./MessagesPage.scss";
 
@@ -15,12 +13,11 @@ type Message = {
 
 type Props = {
   updateUser: (data: { auth: boolean; username?: string | null }) => void;
-  fetchMessages: () => any;
 };
 
-const dataUrl = "http://localhost:4000";
+const dataUrl = "http://localhost:8000";
 
-const MessagesPage: React.FC<Props> = ({ updateUser, fetchMessages }) => {
+const MessagesPage: React.FC<Props> = ({ updateUser }) => {
   const [data, setData] = useState<Message[]>([]);
   const [message, setMessage] = useState("");
   const [username, setUsername] = useState("");
@@ -30,34 +27,35 @@ const MessagesPage: React.FC<Props> = ({ updateUser, fetchMessages }) => {
     setUsername(user?.username);
   }, []);
 
-  store.subscribe(() => {
-    setData(store.getState().messages.messages);
-    console.log(store.getState().messages.messages)
-  });
-
-
   useEffect(() => {
-    fetchMessages();
+    const getData = async () => {
+      const res = await fetch(`${dataUrl}/messages/`);
+      const data = await res.json();
+      setData(data);
+    };
+
+    getData();
   }, []);
 
-  async function addMessage() {
-    await fetch(`${dataUrl}/messages`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json;charset=UTF-8",
-      },
-      body: JSON.stringify({ userFrom: username, text: message }),
-    });
-    fetchMessages();
-  }
+  socket.on("message", (data) => {
+    const dataToJson = JSON.parse(data);
+    setData(dataToJson);
+  });
 
   async function sendMessage(e: FormEvent) {
     e.preventDefault();
-    if(message !== ""){
-        setMessage("");
-        addMessage();
+
+    if (message !== "") {
+      socket.emit(
+        "new_message",
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        /* @ts-ignore */
+        { userFrom: username, text: message }
+      );
+
+      //   socket.emit("message_added");
     }
-    return
+    setMessage("");
   }
 
   function exit() {
@@ -114,7 +112,4 @@ const MessagesPage: React.FC<Props> = ({ updateUser, fetchMessages }) => {
   );
 };
 
-export default connect(
-  ({ messages }) => messages,
-  MessageActions
-)(MessagesPage);
+export default MessagesPage;
