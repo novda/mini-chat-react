@@ -98,7 +98,10 @@ def handle_connect(socket, environd):
 async def handle_new_message(sid, data):
     con = create_connection()
     insertVaribleIntoTable(data['userFrom'], data['text'], sqliteConnection=con)
-    sock = await socket_manager.send(data=get_messages())
+    await socket_manager.send(data=get_messages())
+
+async def cleaned():
+    await socket_manager.send(data=get_messages())
 
 
 socket_manager = SocketManager()

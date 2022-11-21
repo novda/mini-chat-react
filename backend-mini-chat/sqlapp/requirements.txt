@@ -1,3 +1,0 @@
-SQLAlchemy~=1.4.44
-fastapi~=0.87.0
-pydantic~=1.10.2

@@ -14,3 +14,14 @@ def create_message(db: Session, message: MessageCreate):
     db.commit()
     db.refresh(db_message)
     return db_message
+
+def crud_delete_message(db: Session, id:int):
+    all_messages = db.get(Message, id)
+    db.delete(all_messages)
+    db.commit()
+    return f'deleted message by id = {id}'
+
+def crud_delete_all_messages(db: Session):
+    db.query(Message).delete()
+    db.commit()
+    return 'cleaned'

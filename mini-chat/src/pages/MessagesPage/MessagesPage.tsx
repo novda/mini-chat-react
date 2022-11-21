@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useRef, useState } from "react";
 import Message from "../../components/Message";
 import { Container, Navbar, Row, Col, Form, Button } from "react-bootstrap";
 import socket from "../../utils/socket/socket";
@@ -37,6 +37,16 @@ const MessagesPage: React.FC<Props> = ({ updateUser }) => {
     getData();
   }, []);
 
+  const messagesEndRef = useRef<HTMLInputElement>(null);
+
+  const scrollToBottom = () => {
+    if (messagesEndRef.current !== null) {
+      messagesEndRef.current.scrollIntoView();
+    }
+  };
+
+  useEffect(scrollToBottom, [data]);
+
   socket.on("message", (data) => {
     const dataToJson = JSON.parse(data);
     setData(dataToJson);
@@ -62,6 +72,12 @@ const MessagesPage: React.FC<Props> = ({ updateUser }) => {
     updateUser({ auth: false, username: "" });
   }
 
+  function cleanMessages() {
+    fetch("http://127.0.0.1:8000/all_messages", {
+      method: "DELETE",
+    }).then(() => window.location.reload());
+  }
+
   return (
     <div className="MessagePage">
       <Navbar className="MessagePage-navbar">
@@ -69,6 +85,11 @@ const MessagesPage: React.FC<Props> = ({ updateUser }) => {
           <Navbar.Brand href="/">Mini chat</Navbar.Brand>
           <Navbar.Toggle />
           <Navbar.Collapse className="justify-content-end">
+            <Navbar.Text>
+              <div className="MessagePage-navbar-clean" onClick={cleanMessages}>
+                Clean
+              </div>
+            </Navbar.Text>
             <Navbar.Text>
               <div className="MessagePage-navbar-exit" onClick={exit}>
                 Exit
@@ -85,6 +106,7 @@ const MessagesPage: React.FC<Props> = ({ updateUser }) => {
           {data.map((message) => (
             <Message key={message.id} messageData={message} />
           ))}
+          <div ref={messagesEndRef} />
         </div>
         <Row className="MessagePage-body-form">
           <Col md>

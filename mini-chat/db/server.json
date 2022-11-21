@@ -1,4 +1,0 @@
-{
-  "users": [{ "id": 1, "name": "Frodo" }],
-  "messages": [{ "id": 1, "userFrom": "Frodo", "text": "Hello!" }]
-}

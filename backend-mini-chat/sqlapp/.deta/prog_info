@@ -1,1 +1,0 @@
-{"id":"0200ee0a-4483-43e4-ac5f-8c5201c3001f","space":38940,"runtime":"python3.9","name":"sqlapp","path":"s71hn7","project":"a08kklfg","account":"144798365827","region":"eu-central-1","deps":["SQLAlchemy~=1.4.44","fastapi~=0.87.0","pydantic~=1.10.2"],"envs":null,"public":true,"log_level":"debug","cron":""}

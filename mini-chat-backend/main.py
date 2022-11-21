@@ -1,11 +1,11 @@
 from typing import List
 
-from fastapi import Depends, FastAPI, WebSocket
+from fastapi import Depends, FastAPI
 from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
 
 
-from crud import get_messages, create_message
+from crud import get_messages, create_message, crud_delete_message, crud_delete_all_messages
 from models import Base
 from schemas import Message, MessageCreate
 from database import SessionLocal, engine
@@ -53,3 +53,11 @@ def read_messages(skip: int = 0, limit: int = 300, db: Session = Depends(get_db)
     items = get_messages(db, skip=skip, limit=limit)
     return items
 
+
+@app.delete("/messages/")
+def delete_messages(db: Session = Depends(get_db), message_id: int = None):
+    return crud_delete_message(db=db, id=message_id)
+
+@app.delete("/all_messages/")
+def delete_all_messages(db: Session = Depends(get_db)):
+    return crud_delete_all_messages(db=db)
