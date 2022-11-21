@@ -15,8 +15,8 @@ type Props = {
   updateUser: (data: { auth: boolean; username?: string | null }) => void;
 };
 
-// const dataUrl = "http://localhost:8000";
-const dataUrl = "https://s71hn7.deta.dev"
+const dataUrl = "http://localhost:8000";
+// const dataUrl = "https://s71hn7.deta.dev"
 
 const MessagesPage: React.FC<Props> = ({ updateUser }) => {
   const [data, setData] = useState<Message[]>([]);
