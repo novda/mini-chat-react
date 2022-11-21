@@ -1,9 +1,9 @@
 from typing import List
 
 from fastapi import Depends, FastAPI
+from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
-
 
 from crud import get_messages, create_message, crud_delete_message, crud_delete_all_messages
 from models import Base
@@ -21,6 +21,7 @@ origins = [
     "http://localhost",
     "http://localhost:8000",
     "http://localhost:3000",
+    "https://s71hn7.deta.dev",  # задеплоил в апп облако, но пока не успел настроить интеграцию с сокетакми
 ]
 
 app.add_middleware(
@@ -41,9 +42,10 @@ def get_db():
     finally:
         db.close()
 
-@app.post("/message/", response_model= Message)
+
+@app.post("/message/", response_model=Message)
 def create_message_post(
-    message: MessageCreate, db: Session = Depends(get_db)
+        message: MessageCreate, db: Session = Depends(get_db)
 ):
     return create_message(db=db, message=message)
 
@@ -58,6 +60,11 @@ def read_messages(skip: int = 0, limit: int = 300, db: Session = Depends(get_db)
 def delete_messages(db: Session = Depends(get_db), message_id: int = None):
     return crud_delete_message(db=db, id=message_id)
 
+
 @app.delete("/all_messages/")
 def delete_all_messages(db: Session = Depends(get_db)):
     return crud_delete_all_messages(db=db)
+
+@app.get("/")
+async def redirect_typer():
+    return RedirectResponse("/docs")
