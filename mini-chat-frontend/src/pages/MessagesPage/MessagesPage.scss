@@ -1,0 +1,44 @@
+.MessagePage {
+  @import "~bootstrap/scss/bootstrap";
+
+  &-navbar {
+    border-bottom: 1px solid rgba(39, 38, 38, 0.2);
+
+    &-exit, &-clean {
+      text-decoration: underline;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+  }
+
+  &-body {
+    height: 85vh;
+    margin-top: 20px;
+
+    border-radius: 5px;
+    box-shadow: 0 2px 3px 2px rgba(39, 38, 38, 0.2);
+
+    &-nav {
+      height: 5%;
+      font-weight: bold;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    &-data {
+      height: 85%;
+      overflow: auto;
+    }
+
+    &-form {
+      height: 10%;
+
+      &-group {
+        display: flex;
+        margin-top: 15px;
+      }
+    }
+  }
+}
