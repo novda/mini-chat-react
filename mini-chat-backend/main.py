@@ -21,7 +21,7 @@ origins = [
     "http://localhost",
     "http://localhost:8000",
     "http://localhost:3000",
-    "https://s71hn7.deta.dev",  # задеплоил в апп облако, но пока не успел настроить интеграцию с сокетакми
+    "https://s71hn7.deta.dev",
     "http://s71hn7.deta.dev"
 ]
 
@@ -31,7 +31,6 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-
 )
 
 
@@ -69,3 +68,5 @@ def delete_all_messages(db: Session = Depends(get_db)):
 @app.get("/")
 async def redirect_typer():
     return RedirectResponse("/docs")
+
+

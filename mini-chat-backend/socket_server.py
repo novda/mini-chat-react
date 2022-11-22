@@ -13,6 +13,7 @@ def create_connection():
 
     return conn
 
+
 # def delete_all_tasks(conn):
 #     """
 #     Delete all rows in the tasks table
@@ -61,9 +62,9 @@ def select_all_messages(conn):
         message_list.append(d)
 
     json_messages = json.dumps(message_list)
-        
+
     return json_messages
-    
+
 
 def get_messages():
     con = create_connection()
@@ -73,7 +74,10 @@ def get_messages():
 class SocketManager:
     def __init__(self):
         self.server = socketio.AsyncServer(
-            cors_allowed_origins=[],
+            cors_allowed_origins=["https://s71hn7.deta.dev",
+                                  "http://s71hn7.deta.dev",
+                                  "http://localhost:8000",
+                                  "http://localhost:3000"],
             async_mode="asgi",
         )
         self.app = socketio.ASGIApp(self.server)
@@ -94,11 +98,11 @@ def handle_connect(socket, environd):
     print(f"connect ${socket}")
 
 
-
 async def handle_new_message(sid, data):
     con = create_connection()
     insertVaribleIntoTable(data['userFrom'], data['text'], sqliteConnection=con)
     await socket_manager.send(data=get_messages())
+
 
 async def cleaned():
     await socket_manager.send(data=get_messages())
