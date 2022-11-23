@@ -74,10 +74,7 @@ def get_messages():
 class SocketManager:
     def __init__(self):
         self.server = socketio.AsyncServer(
-            cors_allowed_origins=["https://s71hn7.deta.dev",
-                                  "http://s71hn7.deta.dev",
-                                  "http://localhost:8000",
-                                  "http://localhost:3000"],
+            cors_allowed_origins=[],
             async_mode="asgi",
         )
         self.app = socketio.ASGIApp(self.server)

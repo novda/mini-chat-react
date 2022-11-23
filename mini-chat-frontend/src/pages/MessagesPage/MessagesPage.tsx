@@ -16,7 +16,7 @@ type Props = {
 };
 
 // const dataUrl = "http://localhost:8000";
-const dataUrl = "http://125c-188-186-140-107.ngrok.io"
+const dataUrl = "https://125c-188-186-140-107.ngrok.io"
 
 const MessagesPage: React.FC<Props> = ({ updateUser }) => {
   const [data, setData] = useState<Message[]>([]);

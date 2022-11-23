@@ -1,7 +1,10 @@
 from typing import List
+import os
+import sys
 
 from fastapi import Depends, FastAPI
 from fastapi.responses import RedirectResponse
+from fastapi.logger import logger
 from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -9,11 +12,41 @@ from crud import get_messages, create_message, crud_delete_message, crud_delete_
 from models import Base
 from schemas import Message, MessageCreate
 from database import SessionLocal, engine
+from pydantic import BaseSettings
 from socket_server import socket_manager
+
+class Settings(BaseSettings):
+    # ... The rest of our FastAPI settings
+
+    BASE_URL = "http://localhost:8000"
+    USE_NGROK = os.environ.get("USE_NGROK", "False") == "True"
+settings = Settings()
+
+def init_webhooks(base_url):
+    # Update inbound traffic via APIs to use the public-facing ngrok URL
+    pass
 
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+
+if settings.USE_NGROK:
+    # pyngrok should only ever be installed or initialized in a dev environment when this flag is set
+    from pyngrok import ngrok
+
+    # Get the dev server port (defaults to 8000 for Uvicorn, can be overridden with `--port`
+    # when starting the server
+    port = sys.argv[sys.argv.index("--port") + 1] if "--port" in sys.argv else 8000
+
+    # Open a ngrok tunnel to the dev server
+    public_url = ngrok.connect(port).public_url
+    logger.info("ngrok tunnel \"{}\" -> \"http://127.0.0.1:{}\"".format(public_url, port))
+
+    # Update any base URLs or webhooks to use the public ngrok URL
+    settings.BASE_URL = public_url
+    init_webhooks(public_url)
+
+print(public_url)
 
 socket_manager.mount_to("/ws", app)
 
@@ -22,12 +55,13 @@ origins = [
     "http://localhost:8000",
     "http://localhost:3000",
     "https://s71hn7.deta.dev",
-    "http://s71hn7.deta.dev"
+    "https://mini-chat-app-11.herokuapp.com",
+    "http://a6b2-188-186-140-107.ngrok.io"
 ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins="*",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

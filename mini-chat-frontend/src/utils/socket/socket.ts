@@ -1,6 +1,6 @@
 import { io } from "socket.io-client";
 
-const socket = io("http://125c-188-186-140-107.ngrok.io", {
+const socket = io("https://125c-188-186-140-107.ngrok.io", {
   path: "/ws/socket.io",
 }); 
 
